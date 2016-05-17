@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class DirectedAcyclicGraph {
     
-    private static DAGNode root;
+    private DAGNode root;
     
     public DirectedAcyclicGraph(String rootName){
         root = new DAGNode(rootName);
