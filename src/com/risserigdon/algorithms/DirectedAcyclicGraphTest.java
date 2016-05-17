@@ -8,19 +8,31 @@ import org.junit.Test;
 import com.risserigdon.algorithms.DirectedAcyclicGraph.DAGNode;
 
 public class DirectedAcyclicGraphTest {
-
-    @Test
-    public void testAddEdge() {
-        DirectedAcyclicGraph graph = new DirectedAcyclicGraph("A");
-        DAGNode nodeB = new DAGNode("B");
-        DAGNode nodeC = new DAGNode("C");
+    DirectedAcyclicGraph graph;
+    DAGNode nodeB;
+    DAGNode nodeC;
+    
+    @Before
+    public void setUp() throws Exception {
+        graph = new DirectedAcyclicGraph("A");
+        nodeB = new DAGNode("B");
+        nodeC = new DAGNode("C");
         
         graph.getRoot().addChild(nodeB);
         graph.getRoot().addChild(nodeC);
-        
-        graph.addEdge("B", "C");
-        
+    }
+
+    @Test
+    public void testAddEdge() {         
+        assertTrue(graph.addEdge("B", "C"));        
         assertTrue(nodeB.children.contains(nodeC));
+    }
+    
+    @Test
+    public void shouldNotAllowCycleCreation() {
+        DAGNode nodeD = new DAGNode("D");
+        nodeB.addChild(nodeD);
+        assertFalse(graph.addEdge("D", "A"));
     }
 
 }
