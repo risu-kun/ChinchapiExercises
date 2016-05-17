@@ -1,5 +1,4 @@
 package com.risserigdon.algorithms;
-
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -9,30 +8,42 @@ import com.risserigdon.algorithms.DirectedAcyclicGraph.DAGNode;
 
 public class DirectedAcyclicGraphTest {
     DirectedAcyclicGraph graph;
+    DAGNode nodeA;
     DAGNode nodeB;
     DAGNode nodeC;
+    DAGNode nodeD;
+    DAGNode nodeE;
+    DAGNode nodeF;
     
     @Before
     public void setUp() throws Exception {
-        graph = new DirectedAcyclicGraph("A");
+    	graph = new DirectedAcyclicGraph("A");
+    	nodeA = graph.getRoot();
         nodeB = new DAGNode("B");
         nodeC = new DAGNode("C");
+        nodeD = new DAGNode("D");
+        nodeE = new DAGNode("E");
+        nodeF = new DAGNode("F");
         
-        graph.getRoot().addChild(nodeB);
-        graph.getRoot().addChild(nodeC);
+        nodeA.addChild(nodeB);
+        nodeA.addChild(nodeC);
+        nodeB.addChild(nodeD);
+        nodeB.addChild(nodeE);
+        nodeC.addChild(nodeE);
+        nodeD.addChild(nodeF);
+        nodeE.addChild(nodeF);
     }
 
     @Test
-    public void testAddEdge() {         
-        assertTrue(graph.addEdge("B", "C"));        
-        assertTrue(nodeB.children.contains(nodeC));
+    public void shouldAllowCreationOfValidEdges() {
+        assertTrue(graph.addEdge("B", "E"));        
+        assertTrue(nodeB.children.contains(nodeD));
     }
     
     @Test
     public void shouldNotAllowCycleCreation() {
-        DAGNode nodeD = new DAGNode("D");
-        nodeB.addChild(nodeD);
-        assertFalse(graph.addEdge("D", "A"));
+        assertFalse(graph.addEdge("F", "A"));
+        assertFalse(nodeF.children.contains(nodeA));
     }
 
 }
