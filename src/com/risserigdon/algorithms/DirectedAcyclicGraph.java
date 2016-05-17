@@ -25,6 +25,33 @@ public class DirectedAcyclicGraph {
 			children.add(child);
 		}
 		
+		/**
+	     * Depth-first search through the graph for the target String
+	     * 
+	     * @param target the String to be found in the name field of a node
+	     * @return the node where the target is found, or null if it is not
+	     */
+	    public DAGNode find(String target){
+	    	if (name == target)
+	    		return this;
+	    	else if (children.isEmpty())
+	    		return null;
+	    	else {
+	    		DAGNode found = null;
+	    		int i = 0;
+	    		while (found == null && i < children.size()) {
+	    			found = children.get(i).find(target);
+	    			i++;
+	    		}
+	    		return found;
+	    	}
+	    		
+	    }
+	    
+	    public String getName(){
+	    	return name;
+	    }
+	    		
 		public ArrayList<DAGNode> getChildren() {
 			return children;
 		}
@@ -52,13 +79,35 @@ public class DirectedAcyclicGraph {
     	return false;
     }
     
-    public static void main(String args[]){
-    	DAGNode root = new DAGNode("test parent");
-    	DAGNode child = new DAGNode("test child");
-    	root.addChild(child);
+    public static void runTests(){
+    	DAGNode root = new DAGNode("root node");
+    	DAGNode firstChild = new DAGNode("root's first child");
+    	DAGNode secondChild = new DAGNode("root's second child");
+    	DAGNode thirdChild = new DAGNode("root's third child");
     	
-    	// print True if the test child was added successfully to the root
-    	System.out.println(root.getChildren().contains(child));
+    	root.addChild(firstChild);
+    	root.addChild(secondChild);
+    	root.addChild(thirdChild);
+    	
+    	DAGNode firstGrandchild = new DAGNode("firstChild's child");
+    	firstChild.addChild(firstGrandchild);
+    	
+    	DAGNode firstGreatGrandchild = new DAGNode("firstChild's grandchild");
+    	firstGrandchild.addChild(firstGreatGrandchild);
+    	
+    	
+    	// print True if the third child was added successfully to the root
+    	System.out.println(root.find("root's third child") != null);
+    	
+    	// print True if the grandchild was added successfully to the first child
+    	System.out.println(root.find("firstChild's child") != null);
+    	
+    	// print True if the grandchild was added successfully to the first child
+    	System.out.println(root.find("firstChild's grandchild") != null);
+    }
+    
+    public static void main(String args[]){
+    	runTests();	
     }
 
 }
