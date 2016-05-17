@@ -1,25 +1,19 @@
 package com.risserigdon.algorithms;
-
 import java.util.ArrayList;
 
 public class DirectedAcyclicGraph {
-    
+
     private DAGNode root;
-    
+
     public DirectedAcyclicGraph(String rootName){
         root = new DAGNode(rootName);
-    }
-
-    public DAGNode getRoot() {
-        return root;
-    }
+    } 
 
     /**
      * Add an edge from {@code source} to {@code destination} and return
      * {@code true} if the edge is added as a result of this function. If
      * either {@code source} or {@code destination} does not exist, create
      * them before adding the edge.
-
      * @param source the name of the source node
      * @param destination the name of the destination edge
      * @return {@code true} if the edge is added as a result of this 
@@ -29,7 +23,7 @@ public class DirectedAcyclicGraph {
         //search for source and destination
         DAGNode sourceNode = root.find(source);
         DAGNode destNode = root.find(destination);
-        
+
         //if source is not found but destination is, create source
         if (sourceNode == null && destNode != null)
             sourceNode = new DAGNode(source);
@@ -40,13 +34,25 @@ public class DirectedAcyclicGraph {
         else if (sourceNode == null && destNode == null) {
             return false;
         }
-        
+
+        //prevent creating a cycle
+        if (cycleExists(sourceNode, destNode)) {      
+            return false;
+        }
+
         //add destination to the source's children list
         sourceNode.addChild(destNode);
         return true;  
     }
 
-    
+    private boolean cycleExists(DAGNode source, DAGNode destination){
+        return (destination.find(source.getName()) != null);
+    }
+
+    public DAGNode getRoot() {
+        return root;
+    }
+
     /**
      * Represents a single node of a directed acyclic graph
      */
@@ -75,7 +81,7 @@ public class DirectedAcyclicGraph {
          * @return the node where the target is found, or null if it is not
          */
         public DAGNode find(String target){
-            if (name == target)
+            if (name.equals(target))
                 return this;
             else if (children.isEmpty())
                 return null;
@@ -99,5 +105,4 @@ public class DirectedAcyclicGraph {
         }
 
     }
-
 }
