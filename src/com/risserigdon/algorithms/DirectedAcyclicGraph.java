@@ -46,40 +46,6 @@ public class DirectedAcyclicGraph {
         return true;  
     }
 
-    public static void runTests(){
-        
-        DirectedAcyclicGraph graph = new DirectedAcyclicGraph("root node");
-        DAGNode root = graph.getRoot();
-     
-        DAGNode firstChild = new DAGNode("root's first child");
-        DAGNode secondChild = new DAGNode("root's second child");
-        DAGNode thirdChild = new DAGNode("root's third child");
-
-        root.addChild(firstChild);
-        root.addChild(secondChild);
-        root.addChild(thirdChild);
-
-        DAGNode firstGrandchild = new DAGNode("firstChild's child");
-        firstChild.addChild(firstGrandchild);
-
-        DAGNode firstGreatGrandchild = new DAGNode("firstChild's grandchild");
-        firstGrandchild.addChild(firstGreatGrandchild);
-
-
-        // print True if the third child was added successfully to the root
-        System.out.println(root.find("root's third child") != null);
-
-        // print True if the grandchild was added successfully to the first child
-        System.out.println(root.find("firstChild's child") != null);
-
-        // print True if the grandchild was added successfully to the first child
-        System.out.println(root.find("firstChild's grandchild") != null);
-        
-        // test addEdge() method
-        graph.addEdge("firstChild's grandchild", "root's second child");
-        // print True if directed edge has been created between secondChild and firstGreatGrandchild
-        System.out.println(firstGreatGrandchild.getChildren().contains(secondChild));
-    }
     
     /**
      * Represents a single node of a directed acyclic graph
@@ -132,11 +98,6 @@ public class DirectedAcyclicGraph {
             return children;
         }
 
-    }
-    
-
-    public static void main(String args[]){
-        runTests();       	
     }
 
 }
