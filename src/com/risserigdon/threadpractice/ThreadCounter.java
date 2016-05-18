@@ -15,7 +15,7 @@ public class ThreadCounter implements Runnable {
 
         try{
             counter++;
-            System.out.println(Thread.currentThread().getName() + ": " + counter);
+            System.out.println(counter);
             countedNum = counter;
         }finally{
             counterLock.unlock();
