@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ThreadCounter implements Runnable {
+    static final int MAX = 100;
     static int counter = 0; 
 
     static ReentrantLock counterLock = new ReentrantLock(true);
@@ -27,12 +28,12 @@ public class ThreadCounter implements Runnable {
     public void run() {
         ArrayList<Integer> countedNums = new ArrayList<Integer>();
 
-        while(counter < 100){
+        while(counter < MAX){
             countedNums.add(incrementCounter());
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // Here!
+                Thread.currentThread().interrupt();
                 throw new RuntimeException(e);
             }
         }
