@@ -11,8 +11,9 @@ public class ThreadCounter implements Runnable {
     static ReentrantLock printingCountedNumsLock = new ReentrantLock();
 
     static int incrementCounter(){
-        counterLock.lock();
         int countedNum;
+
+        counterLock.lock();
 
         try{
             counter++;
@@ -21,7 +22,9 @@ public class ThreadCounter implements Runnable {
         }finally{
             counterLock.unlock();
         }
+
         return countedNum;
+
     }
 
     @Override
@@ -29,12 +32,15 @@ public class ThreadCounter implements Runnable {
         ArrayList<Integer> countedNums = new ArrayList<Integer>();
 
         while(counter < MAX){
-            countedNums.add(incrementCounter());
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(e);
+
+            counterLock.lock();
+
+            try{
+                if (counter < MAX) {
+                    countedNums.add(incrementCounter());
+                }
+            } finally {
+                counterLock.unlock();
             }
         }
 
@@ -44,11 +50,11 @@ public class ThreadCounter implements Runnable {
             Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
-        
+
         printCountedNums(countedNums);
-               
+
     }
-    
+
     private void printCountedNums(ArrayList<Integer> countedNums){
         printingCountedNumsLock.lock();
         try {
