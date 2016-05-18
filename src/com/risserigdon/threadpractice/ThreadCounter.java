@@ -27,15 +27,21 @@ public class ThreadCounter implements Runnable {
     public void run() {
         ArrayList<Integer> countedNums = new ArrayList<Integer>();
 
-        while(counter<98){
+        while(counter < 100){
             countedNums.add(incrementCounter());
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Here!
+                throw new RuntimeException(e);
+            }
         }
 
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
         }
         
         printCountedNums(countedNums);
